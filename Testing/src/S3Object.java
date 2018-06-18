@@ -56,7 +56,7 @@ public class S3Object extends MainFrame {
 		
 		/*String clientRegion = "ap-south-1";
         String bucketName = "anybuckets3654";
-        String keyName = "AKIAJOHIXUIZLRH2HGIQ";.
+        String keyName = "";
         String filePath = "C:\\Users\\Dell\\Desktop\\testvideo.mp4";
         String fileName = "testvideo";
         
