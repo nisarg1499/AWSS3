@@ -248,9 +248,7 @@ public class Controller {
 				String keyId = view.getKeyId();
 				String secretId = view.getSecretId();
 				
-				System.out.println(keyId);
-				System.out.println("    ");
-				System.out.println(secretId);
+				
 				AWSCredentials credentials = new BasicAWSCredentials(keyId,secretId);
 				@SuppressWarnings("deprecation")
 				AmazonS3 s3client = new AmazonS3Client(credentials);
