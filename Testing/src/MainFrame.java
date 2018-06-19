@@ -22,7 +22,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "serial" })
 public class MainFrame extends JFrame {
 	private static final String SUFFIX = "/";
 

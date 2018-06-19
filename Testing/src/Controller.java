@@ -28,8 +28,8 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.s3.model.UploadPartRequest;
 import com.amazonaws.services.s3.model.UploadPartResult;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.text.*;
 
 
 @SuppressWarnings("unused")
@@ -37,6 +37,8 @@ public class Controller {
 
 	private static final String SUFFIX = "/";
 	private static MainFrame view;
+	static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	static Timer timer = new Timer();
 	
 	public Controller(MainFrame v){
 		view = v;
@@ -57,11 +59,27 @@ public class Controller {
 			// TODO Auto-generated method stub
 			
 			
-			String timer = view.getTimer();
+			/*String timer = view.getTimer();
 			int finalTimer = Integer.parseInt(timer);
 			System.out.println("Clicked!!!");
 			new Reminder(finalTimer);
-	        System.out.println("Task scheduled.");
+	        System.out.println("Task scheduled.");*/
+	        
+	        
+	        String finalTimer = view.getTimer();
+	        //long taskTimer = Long.parseLong(finalTimer);
+	        System.out.println("Current Time: " + df.format( new Date()));
+			 
+		      //Date and time at which you want to execute
+		    try {
+		    	 Date date = df.parse(finalTimer);
+		    	 new ScheduleTask(date);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 
+		    
 				
 		}
 	}
@@ -231,7 +249,7 @@ public class Controller {
 	}
 	
 	
-	public static class Reminder {
+	/*public static class Reminder {
 	    Timer timer;
 
 	    public Reminder(int seconds) {
@@ -271,5 +289,52 @@ public class Controller {
 	            
 	        }
 	    }
+	}*/
+	
+	
+	
+	public static class ScheduleTask {
+		  
+		public ScheduleTask(Date date) {
+			
+			timer.schedule(new MyTimeTask(), date);
+		}
+		
+		  class MyTimeTask extends TimerTask {
+				
+		  public void run() {
+			  
+			  	System.out.println("Running Task");
+			  	String bucketName = view.getBucketName();
+			  	String folderName = view.getFolderName();
+				String keyId = view.getKeyId();
+				String secretId = view.getSecretId();
+				
+				
+				AWSCredentials credentials = new BasicAWSCredentials(keyId,secretId);
+				@SuppressWarnings("deprecation")
+				AmazonS3 s3client = new AmazonS3Client(credentials);
+				
+				s3client.createBucket(bucketName);
+				
+				for (Bucket bucket : s3client.listBuckets()) {
+					System.out.println(" - " + bucket.getName());
+				}
+				@SuppressWarnings("unused")
+				List<Bucket> buckets = s3client.listBuckets();
+			    
+				
+				createFolder(bucketName, folderName, s3client);
+				
+				String fileName = folderName + "/" + "images.png";
+				s3client.putObject(new PutObjectRequest(bucketName,fileName,new File("C:\\Users\\Dell\\Desktop\\practice.pdf")));
+				System.out.println("Uploaded!!");
+			  
+	         
+				System.out.println("Current Time: " + df.format( new Date()));
+				timer.cancel();
+		  	}
+		}
 	}
+	
 }

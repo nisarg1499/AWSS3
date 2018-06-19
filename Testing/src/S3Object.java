@@ -43,7 +43,7 @@ import com.amazonaws.services.s3.model.UploadPartRequest;
 import com.amazonaws.services.s3.model.UploadPartResult;
 
 
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "serial" })
 public class S3Object extends MainFrame {
 	
 	
